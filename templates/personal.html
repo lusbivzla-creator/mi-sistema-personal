@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Personal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    
+    <header class="bg-blue-800 text-white p-6 rounded-t-xl mb-6 shadow-lg flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <a href="/" class="text-4xl">◀</a>
+            <div>
+                <h1 class="text-4xl font-bold">Bienvenido</h1>
+                <div id="reloj" class="text-xl font-mono">Cargando hora...</div>
+            </div>
+        </div>
+        <button onclick="document.getElementById('modal-agregar').classList.remove('hidden')" 
+                class="bg-green-600 text-white px-6 py-2 rounded-full font-bold">Añadir personal</button>
+    </header>
+
+    <h2 class="text-4xl font-bold mb-8">Personal:</h2>
+
+    <div class="grid grid-cols-4 gap-6">
+        {% for p in personal %}
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-200 text-center">
+            <div class="w-24 h-24 {{ p.color }} rounded-full mx-auto mb-4"></div>
+            <h3 class="text-2xl font-bold">{{ p.nombre }} {{ p.apellido }}</h3>
+            <p class="text-gray-600 mb-4">{{ p.telefono }}</p>
+            <!-- AQUÍ ESTÁ EL CAMBIO CLAVE: loop.index0 envía el ID correcto -->
+            <a href="/detalle_personal?index={{ loop.index0 }}" 
+               class="bg-blue-500 text-white px-8 py-2 rounded-full font-bold block text-center">Editar</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Modal para Añadir Personal (Ahora con campos completos) -->
+    <div id="modal-agregar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl w-96">
+            <h2 class="text-2xl font-bold mb-4">Nuevo Empleado</h2>
+            <form action="/agregar_personal" method="POST">
+                <input name="nombre" placeholder="Nombre" class="w-full border p-2 mb-2 rounded" required>
+                <input name="apellido" placeholder="Apellido" class="w-full border p-2 mb-2 rounded" required>
+                <input name="telefono" placeholder="Teléfono" class="w-full border p-2 mb-2 rounded" required>
+                <input type="date" name="fecha_ingreso" class="w-full border p-2 mb-4 rounded" required>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="document.getElementById('modal-agregar').classList.add('hidden')" 
+                            class="bg-gray-400 text-white px-4 py-2 rounded">Cancelar</button>
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function actualizarReloj() {
+            const ahora = new Date();
+            const opciones = { hour: '2-digit', minute: '2-digit', hour12: true };
+            const hEsp = ahora.toLocaleTimeString('es-ES', { timeZone: 'Europe/Madrid', ...opciones });
+            const hVen = ahora.toLocaleTimeString('es-VE', { timeZone: 'America/Caracas', ...opciones });
+            document.getElementById('reloj').innerText = `ESPAÑA ${hEsp} | VENEZUELA ${hVen}`;
+        }
+        setInterval(actualizarReloj, 1000);
+        actualizarReloj();
+    </script>
+</body>
+</html>

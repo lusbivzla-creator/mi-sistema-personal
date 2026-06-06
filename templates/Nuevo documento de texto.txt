@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Personal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <header class="bg-blue-800 text-white p-6 rounded-t-xl mb-6 shadow-lg flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <a href="/personal" class="text-4xl">◀</a>
+            <div>
+                <h1 class="text-4xl font-bold">Bienvenido</h1>
+                <div id="reloj" class="text-xl">Cargando hora...</div>
+            </div>
+        </div>
+        <button class="bg-red-500 px-6 py-2 rounded-full font-bold">Despedir</button>
+    </header>
+
+    <div class="grid grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-blue-200">
+            <p><strong>Nombre:</strong> Andreina</p>
+            <p><strong>Apellido:</strong> Ortega</p>
+            <hr class="my-4 border-dashed">
+            <p><strong>Fecha de ingreso:</strong> 10/06/2026</p>
+            <hr class="my-4 border-dashed">
+            <p><strong>Día libre:</strong> Domingo</p>
+            <hr class="my-4 border-dashed">
+            <p><strong>Nota:</strong></p>
+            <div class="h-32 border-2 border-gray-200 rounded-xl mt-2 p-2"></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-blue-200">
+            <h2 class="text-xl font-bold mb-4">Cuenta: ✏️</h2>
+            <div class="space-y-4">
+                <p>Cuenta 1</p><hr class="border-dashed">
+                <p>Cuenta 2</p><hr class="border-dashed">
+                <p>Cuenta 3</p><hr class="border-dashed">
+                <p>Cuenta 4</p><hr class="border-dashed">
+                <p>Cuenta 5</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-blue-200">
+            <h2 class="text-xl font-bold mb-4">Reels de prueba: ✏️</h2>
+            <div class="space-y-4">
+                <p>Cuentas 1: 3</p><hr class="border-dashed">
+                <p>Cuentas 2: 3</p><hr class="border-dashed">
+                <p>Cuentas 3: 3</p><hr class="border-dashed">
+                <p>Cuentas 4: 3</p><hr class="border-dashed">
+                <p>Cuentas 5: 3</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function actualizarReloj() {
+            const ahora = new Date();
+            const opciones = { hour: '2-digit', minute: '2-digit', hour12: true };
+            document.getElementById('reloj').innerText = `ESPAÑA ${ahora.toLocaleTimeString('es-ES', {timeZone: 'Europe/Madrid', ...opciones})} | VENEZUELA ${ahora.toLocaleTimeString('es-VE', {timeZone: 'America/Caracas', ...opciones})}`;
+        }
+        setInterval(actualizarReloj, 1000);
+        actualizarReloj();
+    </script>
+</body>
+</html>

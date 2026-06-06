@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Personal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <header class="bg-blue-800 text-white p-6 rounded-t-xl mb-6 shadow-lg flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <a href="/personal" class="text-4xl">◀</a>
+            <div>
+                <h1 class="text-4xl font-bold">Bienvenido</h1>
+                <div id="reloj" class="text-xl font-mono">Cargando hora...</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-blue-200">
+            <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+            <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
+            <hr class="my-4 border-dashed">
+            <p><strong>Fecha de ingreso:</strong> {{ empleado.fecha }}</p>
+            <hr class="my-4 border-dashed">
+            <p><strong>Día libre:</strong> <span id="dia-actual">Domingo</span></p>
+            <button onclick="toggleModal('modal-dia')" class="bg-blue-500 text-white text-xs px-2 py-1 rounded mt-2">Cambiar día</button>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-blue-200">
+            <h2 class="text-xl font-bold mb-4">Cuentas:</h2>
+            <div class="space-y-4">
+                <script>
+                    for(let i=1; i<=5; i++) {
+                        document.write(`
+                            <div class="flex justify-between items-center">
+                                <span class="cuenta-nombre">Cuenta ${i}</span>
+                                <button onclick="prepararEdicion('cuenta-nombre', ${i-1})" class="text-blue-500 font-bold">✏️</button>
+                            </div>
+                        `);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-blue-200">
+            <h2 class="text-xl font-bold mb-4">Reels de prueba:</h2>
+            <div class="space-y-4">
+                <script>
+                    for(let i=1; i<=5; i++) {
+                        document.write(`
+                            <div class="flex justify-between items-center">
+                                <span>Cuentas ${i}: <span class="val-reels">3</span></span>
+                                <button onclick="prepararEdicion('val-reels', ${i-1})" class="text-blue-500 font-bold">✏️</button>
+                            </div>
+                        `);
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-edicion" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-2xl w-80">
+            <h3 class="text-lg font-bold mb-4">Editar</h3>
+            <input type="text" id="input-valor" class="w-full border p-2 mb-4 rounded">
+            <div class="flex justify-end gap-2">
+                <button onclick="toggleModal('modal-edicion')" class="bg-gray-400 text-white px-4 py-2 rounded">Cancelar</button>
+                <button onclick="guardarEdicion()" class="bg-green-500 text-white px-4 py-2 rounded">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-dia" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4">Seleccionar día</h3>
+            <select id="select-dia" class="w-full border p-2 mb-4"><option>Lun</option><option>Mar</option><option>Mie</option><option>Jue</option><option>Vie</option><option>Sab</option><option>Dom</option></select>
+            <button onclick="guardarDia()" class="bg-green-500 text-white px-4 py-2 rounded">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        let claseActual = '', indiceActual = 0;
+        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
+        function prepararEdicion(clase, index) { claseActual = clase; indiceActual = index; document.getElementById('input-valor').value = document.querySelectorAll('.' + clase)[index].innerText; toggleModal('modal-edicion'); }
+        function guardarEdicion() { document.querySelectorAll('.' + claseActual)[indiceActual].innerText = document.getElementById('input-valor').value; toggleModal('modal-edicion'); }
+        function guardarDia() { document.getElementById('dia-actual').innerText = document.getElementById('select-dia').value; toggleModal('modal-dia'); }
+        function actualizarReloj() {
+            const ahora = new Date();
+            const hEsp = ahora.toLocaleTimeString('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', hour12: true });
+            const hVen = ahora.toLocaleTimeString('es-VE', { timeZone: 'America/Caracas', hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('reloj').innerText = `ESPAÑA ${hEsp} | VENEZUELA ${hVen}`;
+        }
+        setInterval(actualizarReloj, 1000);
+        actualizarReloj();
+    </script>
+</body>
+</html>

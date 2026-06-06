@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Gestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8 font-sans">
+    
+    <!-- Encabezado -->
+    <header class="bg-blue-800 text-white p-6 rounded-t-xl mb-6 shadow-lg flex justify-between items-center">
+        <div>
+            <h1 class="text-4xl font-bold">Bienvenido</h1>
+            <div id="reloj" class="text-xl">Cargando hora...</div>
+        </div>
+        <div class="flex gap-4">
+            <button class="bg-blue-400 px-6 py-2 rounded-full font-bold hover:bg-blue-500">Añadir empresa</button>
+            <button class="bg-blue-400 px-6 py-2 rounded-full font-bold hover:bg-blue-500">Añadir personal</button>
+        </div>
+    </header>
+
+    <!-- Estructura de 2 columnas principales -->
+    <div class="grid grid-cols-2 gap-8 items-start">
+        
+        <!-- Columna Izquierda: Empresas y Calendario -->
+        <div class="space-y-8">
+            <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-3xl font-bold">Empresas:</h2>
+                    <button class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm">Editar</button>
+                </div>
+                <p class="text-xl">Empresa 1</p>
+                <p class="text-xl">Empresa 2</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-3xl font-bold">Junio</h2>
+                    <div class="text-blue-500 font-bold text-xl">◀ ▶</div>
+                </div>
+                <div class="grid grid-cols-7 gap-1 text-center font-bold text-sm mb-2">
+                    <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+                </div>
+                <div class="grid grid-cols-7 gap-1 text-center">
+                    <script>
+                        for (let i = 1; i <= 30; i++) {
+                            document.write(`<div class="bg-blue-100 rounded-lg p-2 text-sm">${i}</div>`);
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Personal (Se mantendrá arriba por el layout grid) -->
+        <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-200 h-full">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold">Personal:</h2>
+                <a href="/personal" class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold text-center">Editar</a>
+            </div>
+            <div class="border-t border-gray-300 pt-4">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleInfo('info-andreina')">
+                    <div>
+                        <p class="text-xl font-bold">Andreina</p>
+                        <p class="text-sm text-gray-600">Empresa 1, horario de xx hasta xx</p>
+                    </div>
+                    <span class="text-2xl text-blue-500">▼</span>
+                </div>
+                <div id="info-andreina" class="hidden mt-4 pl-4 bg-gray-50 p-4 rounded-xl text-sm space-y-1">
+                    <p>• Cuentas: 5</p>
+                    <p>• Creación de contenido: 1 por cuenta</p>
+                    <p>• Reels de prueba: 3 por cuenta</p>
+                    <p>• Hora de entrega: 1:30 PM (VEN)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleInfo(id) { document.getElementById(id).classList.toggle('hidden'); }
+        function actualizarReloj() {
+            const ahora = new Date();
+            const opciones = { hour: '2-digit', minute: '2-digit', hour12: true };
+            const hEsp = ahora.toLocaleTimeString('es-ES', { timeZone: 'Europe/Madrid', ...opciones });
+            const hVen = ahora.toLocaleTimeString('es-VE', { timeZone: 'America/Caracas', ...opciones });
+            document.getElementById('reloj').innerText = `ESPAÑA ${hEsp} | VENEZUELA ${hVen}`;
+        }
+        setInterval(actualizarReloj, 1000);
+    </script>
+</body>
+</html>
